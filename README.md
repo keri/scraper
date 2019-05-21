@@ -4,7 +4,7 @@ This is a super simple tool with all functions in one file: run_scraper.py.
 
 ## Instructions for setting up docker
 
-1) Download Docker from docker.com using the 'Download desktop and take a tutorial option'
+1) Download Docker from [docker.com](https://www.docker.com/get-started) using the 'Download desktop and take a tutorial option'
 
 2) Create a free account and log in on the website
 
