@@ -28,14 +28,14 @@ This is a super simple tool with all functions in one file: run_scraper.py
 
 ## Data Information
 
-	Scraped information is put into 2 csv's in app/data 
+Scraped information is put into 2 csv's in app/data 
 	
-	1) Who viewed profile info contains: profileurl, first name, last name of people who viewed the profile and is labeled:
+1) Who viewed profile info contains: profileurl, first name, last name of people who viewed the profile and is labeled:
 	
 	```
 	{login_name}.viewerinfo.csv
 	```
-	2) Message information from the message tab contains: profile url, first name, last name, full message thread, message url 
+2) Message information from the message tab contains: profile url, first name, last name, full message thread, message url 
 	```
 	{login_name}.messages.csv
 	```
