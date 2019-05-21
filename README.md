@@ -1,8 +1,8 @@
-A LinkedIn scaping tool that captures message url, conversations from message thread, and profile url. This tool uses python, selenium, chromedriver and deployed in a docker container.
+A LinkedIn scaping tool that captures message url, conversations from message thread, and profile url. This tool uses python, selenium, chromedriver and deployed in a docker container built on [joyzoursky/docker-python-chromedriver image](https://github.com/joyzoursky/docker-python-chromedriver)
 
 This is a super simple tool with all functions in one file: run_scraper.py
 
-##Instructions for using it in the docker container
+## Instructions for using it in the docker container
 
 1) Download Docker from docker.com using the 'Download desktop and take a tutorial option'
 
@@ -11,30 +11,56 @@ This is a super simple tool with all functions in one file: run_scraper.py
 3) When you execute the app on your desktop, you should see the icon on your top bar
 build the image that you will be using to create containers with. You need to be logged in to use docker containers on your local machine.
 
-##Command line instructions
+## File Structure
 
-1) clone scraper repository
+1) clone this scraper repository
 
 2) cd into the directory that you cloned the repository into
-	'''cd/path/to/folder/you/want'''
-	'''ls enter'''
-	You should see the app folder Dockerfile, requirements.txt'. The app folder has a data folder which is where the scraped data will be placed in a csv file:
+	'''
+	cd /path/to/folder/you/want
+	'''
+	'''
+	ls 
+	
+	On your local machine, you should see the app folder, Dockerfile, and requirements.txt. 
+	,,,
 
-	'''login.viewerinfo.csv has the info from people who have viewed the linkedin page'''
-	'''login.messages.csv has the info from messages linked in page'''
+3) It is very important that the Dockerfile and requirements.txt is one folder up from app. Docker builds the image with the Dockerfile and requirements.txt. When you run the container, it will contain everything from the app folder down and not include the app folder itself.
 
-	It is very important that the Dockerfile and requirements.txt is one folder up from the files that are getting attached to the container. The docker container will have everything in the app folder down, not including the app folder.
+## Data Information
+
+	Scraped information is put into 2 csv's in app/data 
+	
+	'''
+	{login_name}.viewerinfo.csv: profile url, first name, last name of people who viewed the profile
+	'''
+	'''
+	{login_name}.messages.csv: profile url, first name, last name, full message thread, message url from messages page
+	'''
+ 
+ ## Command Line Instructions
 
 
-3) type: 
-	'''docker build -t scraper . '''
+1) Build the image on your local machine
+
+	'''
+	docker build -t scraper . 
+	'''
+
+	Note: 
 	scraper = name of the image that you will make containers from. Name this whatever you like.
 	. = the current directory. Docker will look for the Dockerfile in the directory you are in so it is important you start in the right place.
 
-4) Make a container using this image:
-	'''docker run -it -w /usr/workspace -v /path/on/your/local/machine:/usr/workspace scraper bash'''
+2) Make a container using the built image
 
-	This opens up a terminal IN the container that it has created. From here you can run the script just as you would from your local machine. 
+	'''
+	docker run -it -w /usr/workspace -v /path/on/your/local/machine:/usr/workspace scraper bash
+	'''
 
-	type in the command line prompt (ends with a #) 
-	'''python run_scrape.py "username" "password"'''
+	This opens up a terminal IN the container that was created. From here you can run the script just as you would from your local machine. 
+
+3) type in the command line of the container
+
+	'''
+	python run_scrape.py "username" "password"
+	'''
