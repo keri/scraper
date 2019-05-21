@@ -3,6 +3,7 @@ import sys
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException, InvalidArgumentException
 
 
@@ -76,13 +77,20 @@ def get_message_urls(driver, df):
 def get_full_messages(driver,df):
     select = driver.find_elements_by_css_selector
     select_one = driver.find_element_by_css_selector
-
+  
     convo_list = select('li.msg-conversation-listitem')
+    
+    if len(convo_list) == 0:
+        convo_list = select('li.msg-conversation-listitem')
+
     for convo in convo_list:
         try:
             convo.click()
             try:
                 message = select_one('div.msg-s-message-list').text
+                message = message.replace('\\','')
+                message = message.replace('[','')
+                message = message.replace(']','')
                 message_list = message.split('\n')
                 time.sleep(1)
                 try:
@@ -90,21 +98,26 @@ def get_full_messages(driver,df):
                     profile_url = message_container.find_element_by_css_selector('a').get_attribute('href')
                 except NoSuchElementException:
                     profile_url = 'unable to get'
-                if message_list[0] == 'Recruiter':
-                	name = message_list[0]
-                	df = df.append({'First Name': name, 'Last Name':'none', 'Message': message_list, 'Date': message_list[1], 'Profile':profile_url}, ignore_index=True)
-                elif '2' in message_list[0]:
+                name = message_list[0]
+                if 'cruit' in name:
+                    name = message_list[2].split(' ')
+                    df = df.append({'First Name': name[0], 'Last Name':name[1], 'Message': message_list, 'Date': message_list[1], 'Profile':profile_url}, ignore_index=True)
+                elif '2' in name:
                     if len(message_list) >= 4:
-                    	name = message_list[3].split(' ')
-                    	df = df.append({'First Name': name[0], 'Last Name': name[1], 'Message': message_list, 'Date': message_list[0], 'Profile':profile_url}, ignore_index=True)
+                        name = message_list[3].split(' ')
+                        df = df.append({'First Name': name[0], 'Last Name': name[1], 'Message': message_list, 'Date': message_list[0], 'Profile':profile_url}, ignore_index=True)
                     else:
-                    	name = message_list[1][:-21]
-                    	df = df.append({'First Name': name[0], 'Last Name': name[1], 'Message': message_list, 'Date': message_list[0], 'Profile':profile_url}, ignore_index=True)
+                        name = message_list[1][:-21]
+                        df = df.append({'First Name': name[0], 'Last Name': name[1], 'Message': message_list, 'Date': message_list[0], 'Profile':profile_url}, ignore_index=True)
+                elif 'is reach' in name:
+                    name = message_list[1].split(' ')
+                    df = df.append({'First Name': name[0], 'Last Name': name[1], 'Message': message_list, 'Date': message_list[5], 'Profile': profile_url}, ignore_index=True)
+
                 else:
-                	name = message_list[0].split(' ')
-                	df = df.append({'First Name': name[0], 'Last Name': name[1], 'Message': message_list, 'Date': message_list[5], 'Profile': profile_url}, ignore_index=True)
+                    name = message_list[0].split(' ')
+                    df = df.append({'First Name': name[0], 'Last Name': name[1], 'Message': message_list, 'Date': message_list[5], 'Profile': profile_url}, ignore_index=True)
             except NoSuchElementException:
-            	df = df.append({'First Name': '' , 'Last Name': '', 'Message' : 'advertisement', 'Date': '', 'Profile':'none'}, ignore_index=True)
+                df = df.append({'First Name': '' , 'Last Name': '', 'Message' : 'advertisement', 'Date': '', 'Profile':'none'}, ignore_index=True)
         except ElementNotVisibleException:
             return(df)
     return(df)
@@ -159,17 +172,25 @@ def get_viewer_info(driver):
 
 
 def run(login, password):
-    chromedriver = '/usr/local/bin/chromedriver'
-    driver = webdriver.Chrome(chromedriver)
+    #chromedriver = '/usr/local/bin/chromedriver'
+    #driver = webdriver.Chrome(chromedriver)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.implicitly_wait(2)
+    #driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+
     sign_in(login, password, driver)
     #messages = get_messages(driver)
     messages = get_messages(driver)
-    filename = f'{login}'+'.messages.csv'
+    filename = f"data/{login}.messages.csv"
     messages.to_csv(filename,index=False)
 
     #viewer information
     viewer_df = get_viewer_info(driver)
-    viewerfilename = f'{login}'+'.viewerinfo.csv'
+    viewerfilename = f"data/{login}.viewerinfo.csv"
     viewer_df.to_csv(viewerfilename,index=False)
 
 if __name__ == '__main__':

@@ -1,0 +1,23 @@
+download Docker from docker.com
+	- choose download desktop and take a tutorial
+create a free account and log in
+You should see the icon on your top bar
+build the image that you will be using to create containers with:
+
+	1) go into the directory that you want your files downloaded to (you need to know where they are located using the finder if you're not sure)
+		- open up a terminal type: cd/path/to/folder/you/want
+		- type ls enter: you should see the files you are interested in as well as Dockerfile
+		- the downloaded files will be placed in the data folder. It is VERY important that you don't change the file structure as that will cause the script to break.
+
+	2) Dockerfile must be in one directory above the run_scrape.py file
+
+	3) requirements file needs to be in the same location as Dockerfile
+
+	4) type: docker build -t scraper .
+		scraper = name of the image that you will make containers from. Name this whatever you like.
+		. = the current directory. Docker will look for the Dockerfile in the directory you are in so it is important you start in the right place.
+
+	5) Make a container using this image:
+		type in the command line: docker run -it -w /usr/workspace -v /path/on/your/local/machine:/usr/workspace scraper bash
+			- This opens up a terminal IN the container that it has created. From here you can run the script just as you would from your local machine. 
+			- type in the command line prompt (ends with a #) python run_scrape.py "username" "password"
