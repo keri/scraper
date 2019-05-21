@@ -17,9 +17,9 @@ This is a super simple tool with all functions in one file: run_scraper.py.
 2) Then cd into the directory that you cloned the repository into
 
 ```
-    cd /path/to/folder/you/want
+    $ cd /path/to/folder/you/want
 
-    ls 
+    $ ls 
 	
     On your local machine, you should see the app folder, Dockerfile, and requirements.txt. 
 ```
@@ -44,10 +44,10 @@ Scraped information is put into 2 csv's in app/data
  
  ## Command Line Instructions
 
-1) Build the image on your local machine
+1) Build the image on your local machine. You will only need to do this once. 
 
 	```
-	docker build -t scraper . 
+	$ docker build -t scraper . 
 	```
 
 	Note: 
@@ -58,7 +58,7 @@ Scraped information is put into 2 csv's in app/data
 2) Make a container using the built image
 
 	```
-	docker run -it -w /usr/workspace -v /path/on/your/local/machine:/usr/workspace scraper bash
+	$ docker run -it -w /usr/workspace -v /path/on/your/local/machine:/usr/workspace scraper bash
 	```
 
 	This opens up a terminal IN the container that was created. From here you can run the script just as you would from your local machine. 
@@ -66,5 +66,29 @@ Scraped information is put into 2 csv's in app/data
 3) Type in the command line of the container to collect data (in the 2 csv's listed above) and placed in data/
 
 	```
-	python run_scrape.py "username" "password"
+	# python run_scrape.py "username" "password"
 	```
+
+## More Useful Docker Commands 
+
+You can find a nice, comprehensive list of docker commands [here](https://www.linode.com/docs/applications/containers/docker-commands-quick-reference-cheat-sheet/)
+
+The ones I use all the time are:
+
+```
+	$ docker ps
+
+	Lists all running containers
+```
+
+```
+	$ docker images
+
+	Lists all images on local machine
+```
+
+```
+	$ docker stop [container name or ID]
+
+	Stops the container
+```
