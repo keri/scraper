@@ -2,3 +2,4 @@
 .DS_Store
 *.ipynb
 /secure_stuff
+__pycache__
