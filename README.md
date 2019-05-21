@@ -30,7 +30,7 @@ This is a super simple tool with all functions in one file: run_scraper.py
 
 Scraped information is put into 2 csv's in app/data 
 	
-1) Who viewed profile info contains: profileurl, first name, last name of people who viewed the profile and is labeled:
+1) Who viewed profile csv contains: profileurl, first name, last name of people who viewed the profile
 	
 	```
 	{login_name}.viewerinfo.csv
@@ -51,6 +51,7 @@ Scraped information is put into 2 csv's in app/data
 
 	Note: 
 	scraper = name of the image that you will make containers from. Name this whatever you like.
+	
 	. = the current directory. Docker will look for the Dockerfile in the directory you are in so it is important you 	start in the right place.
 
 2) Make a container using the built image
