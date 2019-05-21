@@ -1,3 +1,4 @@
 .ipynb_checkpoints
 .DS_Store
-workbook.ipynb
+*.ipynb
+/secure_stuff
