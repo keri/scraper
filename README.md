@@ -17,6 +17,7 @@ This is a super simple tool with all functions in one file: run_scraper.py.
 2) Then cd into the directory that you cloned the repository into
 
 ```
+
     $ cd /path/to/folder/you/want
 
     $ ls 
@@ -44,7 +45,10 @@ Scraped information is put into 2 csv's in app/data
  
  ## Command Line Instructions
 
+
 1) Build the image on your local machine. You will only need to do this once. 
+
+
 
 	```
 	$ docker build -t scraper . 
@@ -58,7 +62,9 @@ Scraped information is put into 2 csv's in app/data
 2) Make a container using the built image
 
 	```
+
 	$ docker run -it -w /usr/workspace -v /path/on/your/local/machine:/usr/workspace scraper bash
+
 	```
 
 	This opens up a terminal IN the container that was created. From here you can run the script just as you would from your local machine. 
@@ -67,6 +73,7 @@ Scraped information is put into 2 csv's in app/data
 
 	```
 	# python run_scrape.py "username" "password"
+
 	```
 
 ## More Useful Docker Commands 
@@ -92,3 +99,5 @@ The ones I use all the time are:
 
 	Stops the container
 ```
+
+
